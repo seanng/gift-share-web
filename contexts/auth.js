@@ -1,7 +1,7 @@
 /** @see https://github.com/leerob/fastfeedback/blob/master/lib/auth.js */
 
-import React, { useState, useContext, createContext } from 'react'
-import firebase from './firebase'
+import { useState, useContext, createContext } from 'react'
+import firebase from 'lib/firebase'
 
 const AuthContext = createContext()
 

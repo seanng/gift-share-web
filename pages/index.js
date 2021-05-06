@@ -1,36 +1,45 @@
-const people = [
-  {
-    name: 'Calvin Hawkins',
-    email: 'calvin.hawkins@example.com',
-    image:
-      'https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-  {
-    name: 'Kristen Ramos',
-    email: 'kristen.ramos@example.com',
-    image:
-      'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-  {
-    name: 'Ted Fox',
-    email: 'ted.fox@example.com',
-    image:
-      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-]
+import Link from 'next/link'
 
-export default function Example() {
+export default function LandingPage() {
   return (
-    <ul className="divide-y divide-gray-200">
-      {people.map((person) => (
-        <li key={person.email} className="py-4 flex">
-          <img className="h-10 w-10 rounded-full" src={person.image} alt="" />
-          <div className="ml-3">
-            <p className="text-sm font-medium text-gray-900">{person.name}</p>
-            <p className="text-sm text-gray-500">{person.email}</p>
+    <main className="lg:relative">
+      <div className="mx-auto max-w-7xl w-full pt-16 pb-20 text-center lg:py-48 lg:text-left">
+        <div className="px-4 lg:w-1/2 sm:px-8 xl:pr-16">
+          <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
+            <span className="block xl-2:inline">Buy gifts with</span>{' '}
+            <span className="block text-indigo-600 xl-2:inline">
+              your friends
+            </span>
+          </h1>
+          <p className="mt-3 max-w-md mx-auto text-lg text-gray-500 sm:text-xl md:mt-5 md:max-w-3xl">
+            How does Giftly work? bla bla bla bla
+          </p>
+          <div className="mt-10 sm:flex sm:justify-center lg:justify-start">
+            <div className="rounded-md shadow">
+              <Link href="/create">
+                <a className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">
+                  Create a new project
+                </a>
+              </Link>
+            </div>
+            <div className="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
+              <a
+                href="#"
+                className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10"
+              >
+                Sign in
+              </a>
+            </div>
           </div>
-        </li>
-      ))}
-    </ul>
+        </div>
+      </div>
+      <div className="relative w-full h-64 sm:h-72 md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full">
+        <img
+          className="absolute inset-0 w-full h-full object-cover"
+          src="https://images.unsplash.com/photo-1520333789090-1afc82db536a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2102&q=80"
+          alt=""
+        />
+      </div>
+    </main>
   )
 }

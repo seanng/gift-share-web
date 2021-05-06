@@ -1,9 +1,11 @@
-import { AuthProvider } from 'lib/auth'
+import { AuthProvider } from 'contexts/auth'
 import Head from 'next/head'
+import { StagesProvider } from 'contexts/stages'
+import Layout from 'components/Layout'
 import 'tailwindcss/tailwind.css'
 import 'styles/globals.css'
 
-function MyApp({ Component, pageProps }) {
+export default function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
@@ -13,10 +15,12 @@ function MyApp({ Component, pageProps }) {
         <meta name="description" content="Share gift purchaes with friends!" />
       </Head>
       <AuthProvider>
-        <Component {...pageProps} />
+        <StagesProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </StagesProvider>
       </AuthProvider>
     </>
   )
 }
-
-export default MyApp

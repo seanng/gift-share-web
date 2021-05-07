@@ -12,7 +12,7 @@ export default function Stepper() {
       <p className="text-sm font-medium">{currentStage.name}</p>
       <ol className="ml-8 flex items-center space-x-5">
         {stages.map((step, idx) => (
-          <li key={step}>
+          <li key={step.name}>
             <ProgressDot
               name={step.name}
               idx={idx}

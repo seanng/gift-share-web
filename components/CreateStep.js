@@ -1,23 +1,29 @@
 import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import PageContainer from 'components/PageContainer'
+import PageTitle from 'components/PageTitle'
 
 export default function CreateStep({
   title,
+  description,
   updateDetails,
   inputs,
   ...wizardProps
 }) {
   const defaultValues = useMemo(() => {
     const retVal = {}
-    inputs.forEach(({ name }) => {
-      retVal[name] = ''
+    inputs.forEach(({ name, defaultValue }) => {
+      retVal[name] = defaultValue || ''
     })
     return retVal
   }, [])
 
   // TODO: add validation
-  const { register, handleSubmit } = useForm({ defaultValues })
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ defaultValues })
 
   const onSubmit = (data) => {
     updateDetails(data)
@@ -31,26 +37,32 @@ export default function CreateStep({
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <PageContainer classes="flex flex-col items-center">
-        <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate mb-2">
-          {title}
-        </h2>
-        <div className="w-96">
+        <PageTitle>{title}</PageTitle>
+        {description && (
+          <p className="text-sm text-gray-600 whitespace-pre-wrap mt-6">
+            {description}
+          </p>
+        )}
+        <div className="w-96 mt-6">
           {inputs.map((input) => (
             <div key={input.name} className="my-4">
               <label
                 htmlFor={input.name}
                 className="block text-sm font-medium text-gray-700"
               >
-                {input.name}
+                {input.label}
               </label>
               <div className="mt-1">
                 <input
                   type={input.type}
                   name={input.name}
                   id={input.name}
-                  className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  className={`shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md ${
+                    errors[input.name] &&
+                    'border-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500'
+                  }`}
                   placeholder={input.placeholder}
-                  {...register(input.name)}
+                  {...register(input.name, input.validation)}
                 />
               </div>
             </div>

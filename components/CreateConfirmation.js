@@ -1,4 +1,5 @@
 import PageContainer from 'components/PageContainer'
+import PageTitle from 'components/PageTitle'
 
 function Row({ label, value }) {
   return (
@@ -20,17 +21,15 @@ export default function CreateConfirmation({
 
   return (
     <PageContainer classes="flex flex-col items-center">
-      <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate mb-8">
-        Confirm Details
-      </h2>
-      <div className="w-96">
+      <PageTitle>Confirm Details</PageTitle>
+      <div className="w-96 mt-6">
         <div className="bg-white shadow overflow-hidden sm:rounded-lg">
           <dl className="px-4 py-5">
             <Row label="Recipient" value={data.recipient} />
             <Row label="Gift name" value={data.giftName} />
             <Row label="Gift price" value={data.giftPrice} />
             <Row label="Gift website url" value={data.giftWebsite} />
-            <Row label="Minimum contributors" value={data.contributors} />
+            <Row label="Minimum contributors" value={data.minContributors} />
           </dl>
         </div>
         <button

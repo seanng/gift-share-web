@@ -1,97 +1,43 @@
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 import StepWizard from 'react-step-wizard'
+import randomstring from 'randomstring'
 import CreateStep from 'components/CreateStep'
+import StagesBar from 'components/StagesBar'
 import CreateConfirmation from 'components/CreateConfirmation'
+import { createRoom } from 'lib/db'
+import { WIZARD_STEPS, INITIAL_CREATE_FORM_STATE } from 'utils/configs'
 import Animate from 'styles/animate.module.css'
 
-// TODO: add validation
-const steps = [
-  {
-    title: "What's your name and email?",
-    description: '請留下可收信的信箱，我們會透過此信箱寄送禮物進度給您！',
-    inputs: [
-      {
-        name: 'creator',
-        type: 'text',
-        label: 'Name',
-        validation: { required: true },
-      },
-      {
-        name: 'email',
-        type: 'email',
-        label: 'Email',
-        validation: { required: true },
-      },
-    ],
-  },
-  {
-    title: "Who's the lucky recipient?",
-    inputs: [
-      {
-        name: 'recipient',
-        type: 'text',
-        label: 'Recipient',
-        validation: { required: true },
-      },
-    ],
-  },
-  {
-    title: 'Enter the gift details',
-    inputs: [
-      {
-        name: 'giftName',
-        type: 'text',
-        label: 'Gift name',
-        validation: { required: true },
-      },
-      {
-        name: 'giftPrice',
-        type: 'number',
-        label: 'Gift price',
-        validation: { required: true },
-      },
-      {
-        name: 'giftWebsite',
-        type: 'text',
-        label: 'Gift website (optional)',
-      },
-    ],
-  },
-  {
-    title: 'How many contributors?',
-    description:
-      'Enter the minimum number of contributors for this gift.\nThe project will be cancelled if this number is not met.',
-    inputs: [
-      {
-        name: 'minContributors',
-        type: 'number',
-        label: 'Minimum contributors',
-        validation: { required: true, min: 1 },
-        defaultValue: 1,
-      },
-    ],
-  },
-]
-
-const INITIAL_STATE = {
-  creator: '',
-  email: '',
-  recipient: '',
-  giftName: '',
-  giftPrice: '',
-  giftWebsite: '',
-  minContributors: '',
-}
-
 export default function CreatePage() {
-  const [details, setDetails] = useState(INITIAL_STATE)
+  const [details, setDetails] = useState(INITIAL_CREATE_FORM_STATE)
+  const router = useRouter()
 
   const updateDetails = (formValues) => {
     setDetails({ ...details, ...formValues })
   }
 
-  const handleConfirmClick = () => {
-    // clicking
+  const handleConfirmClick = async () => {
+    const hash = randomstring.generate(12)
+
+    // create room
+    const roomRef = await createRoom({
+      status: 'invitation',
+      participants: [{ name: details.creator, email: details.email, hash }],
+      recipient: details.recipient,
+      giftName: details.giftName,
+      giftPrice: details.giftPrice,
+      giftWebsite: details.giftWebsite,
+      minContributors: details.minContributors,
+    })
+
+    // send email to creator
+
+    // navigate to room with hash in param
+    router.push({
+      pathname: '/rooms/[slug]',
+      query: { slug: roomRef.id, hash },
+    })
   }
 
   const transitions = {
@@ -102,17 +48,23 @@ export default function CreatePage() {
   }
 
   return (
-    <StepWizard transitions={transitions}>
-      {steps.map((step) => (
-        <CreateStep
-          title={step.title}
-          description={step.description}
-          inputs={step.inputs}
-          key={step.title}
-          updateDetails={updateDetails}
+    <>
+      <StagesBar index={0} />
+      <StepWizard transitions={transitions}>
+        {WIZARD_STEPS.map((step) => (
+          <CreateStep
+            title={step.title}
+            description={step.description}
+            inputs={step.inputs}
+            key={step.title}
+            updateDetails={updateDetails}
+          />
+        ))}
+        <CreateConfirmation
+          data={details}
+          onConfirmClick={handleConfirmClick}
         />
-      ))}
-      <CreateConfirmation data={details} onConfirmClick={handleConfirmClick} />
-    </StepWizard>
+      </StepWizard>
+    </>
   )
 }

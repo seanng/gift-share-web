@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import PageContainer from 'components/PageContainer'
 import PageTitle from 'components/PageTitle'
 
@@ -15,6 +16,13 @@ export default function CreateConfirmation({
   onConfirmClick,
   ...wizardProps
 }) {
+  const [isConfirmClicked, setIsConfirmClicked] = useState(false)
+
+  const handleConfirmClick = (payload) => {
+    setIsConfirmClicked(true)
+    onConfirmClick(payload)
+  }
+
   const handleBackClick = () => {
     wizardProps.previousStep()
   }
@@ -33,9 +41,10 @@ export default function CreateConfirmation({
           </dl>
         </div>
         <button
+          disabled={isConfirmClicked}
           type="button"
           className="w-full flex justify-center px-4 py-2 mt-8 mb-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          onClick={onConfirmClick}
+          onClick={handleConfirmClick}
         >
           Confirm
         </button>

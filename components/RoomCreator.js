@@ -6,6 +6,7 @@ import PageTitle from 'components/PageTitle'
 
 const BASE_URL = 'https://www.giftshare.com/rooms'
 
+// TODO: delete
 const participants = [
   {
     name: 'Bryan',
@@ -31,6 +32,13 @@ export default function RoomCreator({ data }) {
   // const [isCopied, setIsCopied] = useState(false)
   const handleCopy = () => {}
   console.log('data in RoomCreator: ', data)
+
+  const handleNextClick = () => {
+    // check that min contributors
+  }
+
+  const shouldDisableNextButton =
+    data.participants.length < data.minContributors * 1
 
   const inviteLink = `${BASE_URL}/${data.slug}`
 
@@ -108,23 +116,29 @@ export default function RoomCreator({ data }) {
           </div>
 
           {/* room stats table */}
-          <div>
-            <dl className="mt-5 grid grid-cols-3 gap-3">
-              {tableData.map(({ label, value }) => (
-                <div
-                  key={label}
-                  className="px-4 pt-5 pb-4 bg-white shadow rounded-lg overflow-hidden text-center"
-                >
-                  <dt className="text-xs font-medium text-gray-500 truncate">
-                    {label}
-                  </dt>
-                  <dd className="mt-2 text-2xl font-semibold text-gray-900">
-                    {value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
+          <dl className="my-5 grid grid-cols-3 gap-3">
+            {tableData.map(({ label, value }) => (
+              <div
+                key={label}
+                className="px-4 pt-5 pb-4 bg-white shadow rounded-lg overflow-hidden text-center"
+              >
+                <dt className="text-xs font-medium text-gray-500 truncate">
+                  {label}
+                </dt>
+                <dd className="mt-2 text-2xl font-semibold text-gray-900">
+                  {value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+          <button
+            type="button"
+            className="w-full flex justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+            disabled={shouldDisableNextButton}
+            onClick={handleNextClick}
+          >
+            Proceed to Payment
+          </button>
         </div>
       </PageContainer>
     </>

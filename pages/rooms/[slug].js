@@ -2,34 +2,43 @@ import { useMemo, useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import RoomNotFound from 'components/RoomNotFound'
 import RoomCreatorInvite from 'components/RoomCreatorInvite'
+import RoomCreatorPayment from 'components/RoomCreatorPayment'
 import RoomMemberInvite from 'components/RoomMemberInvite'
+import RoomMemberPayment from 'components/RoomMemberPayment'
 import RoomInviteeContainer from 'components/RoomInviteeContainer'
 import RoomInit from 'components/RoomInit'
 import {
   ROOM_NOT_FOUND,
   ROOM_INIT,
   ROOM_CREATOR_INVITE,
+  ROOM_CREATOR_PAYMENT,
   ROOM_INVITEE,
   ROOM_MEMBER_INVITE,
+  ROOM_MEMBER_PAYMENT,
   INVITE_STATUS,
+  PAYMENT_STATUS,
 } from 'utils/constants'
 import { INITIAL_ROOM_DATA_STATE } from 'utils/configs'
 import { listenToRoom } from 'lib/db'
 
 const roomCreatorModes = {
   [INVITE_STATUS]: ROOM_CREATOR_INVITE,
+  [PAYMENT_STATUS]: ROOM_CREATOR_PAYMENT,
 }
 
 const roomMemberModes = {
   [INVITE_STATUS]: ROOM_MEMBER_INVITE,
+  [PAYMENT_STATUS]: ROOM_MEMBER_PAYMENT,
 }
 
 const views = {
   [ROOM_NOT_FOUND]: RoomNotFound,
   [ROOM_INIT]: RoomInit,
   [ROOM_INVITEE]: RoomInviteeContainer,
-  [ROOM_MEMBER_INVITE]: RoomMemberInvite,
   [ROOM_CREATOR_INVITE]: RoomCreatorInvite,
+  [ROOM_CREATOR_PAYMENT]: RoomCreatorPayment,
+  [ROOM_MEMBER_INVITE]: RoomMemberInvite,
+  [ROOM_MEMBER_PAYMENT]: RoomMemberPayment,
 }
 
 export default function RoomPage() {

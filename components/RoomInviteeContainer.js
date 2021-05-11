@@ -45,9 +45,11 @@ export default function RoomInviteeContainer({ data }) {
 }
 
 // Hack to get the room hash to work
-function Proxy({ nextStep }) {
+function Proxy({ nextStep, currentStep }) {
   useEffect(() => {
-    nextStep()
+    if (currentStep === 1) {
+      nextStep()
+    }
   }, [])
   return <></>
 }

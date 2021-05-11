@@ -1,17 +1,10 @@
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import randomstring from 'randomstring'
 import PageContainer from 'components/PageContainer'
 import PageTitle from 'components/PageTitle'
 import { updateRoom } from 'lib/db'
-
-const isEmailTaken = (email, participants) => {
-  for (let i = 0; i < participants.length; i += 1) {
-    const participant = participants[i]
-    if (participant.email === email) return true
-  }
-  return false
-}
 
 export default function RoomInviteForm({ data, onRejectClick }) {
   const { slug, participants } = data
@@ -22,6 +15,8 @@ export default function RoomInviteForm({ data, onRejectClick }) {
     formState: { errors },
   } = useForm({ defaultValues: { name: '', email: '' } })
 
+  useReloadOnRouteChange(router)
+
   const onSubmit = async ({ email, name }) => {
     if (isEmailTaken(email, participants)) return
     const hash = randomstring.generate(12)
@@ -31,7 +26,6 @@ export default function RoomInviteForm({ data, onRejectClick }) {
       pathname: '/rooms/[slug]',
       query: { slug, hash },
     })
-    router.reload()
   }
 
   return (
@@ -101,4 +95,24 @@ export default function RoomInviteForm({ data, onRejectClick }) {
       </PageContainer>
     </form>
   )
+}
+
+function isEmailTaken(email, participants) {
+  for (let i = 0; i < participants.length; i += 1) {
+    const participant = participants[i]
+    if (participant.email === email) return true
+  }
+  return false
+}
+
+function useReloadOnRouteChange(router) {
+  useEffect(() => {
+    const handleUrlChange = () => {
+      router.reload()
+    }
+    router.events.on('routeChangeComplete', handleUrlChange)
+    return () => {
+      router.events.off('routeChangeComplete', handleUrlChange)
+    }
+  }, [])
 }

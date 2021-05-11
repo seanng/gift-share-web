@@ -6,7 +6,7 @@ export default function RoomCreatorPayment({ data }) {
   console.log('data in RoomCreatorPayment : ', data)
   return (
     <>
-      <StagesBar index={2} />
+      <StagesBar index={2} isCreator />
       <PageContainer classes="flex flex-col items-center">
         <PageTitle>Awaiting Full Payment</PageTitle>
       </PageContainer>

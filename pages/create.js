@@ -50,7 +50,7 @@ export default function CreatePage() {
 
   return (
     <>
-      <StagesBar index={0} />
+      <StagesBar index={0} isCreator />
       <StepWizard transitions={transitions}>
         {WIZARD_STEPS.map((step) => (
           <CreateStep

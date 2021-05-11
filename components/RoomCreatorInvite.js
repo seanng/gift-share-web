@@ -45,7 +45,7 @@ export default function RoomCreatorInvite({ data }) {
 
   return (
     <>
-      <StagesBar index={1} />
+      <StagesBar index={1} isCreator />
       <PageContainer classes="flex flex-col items-center">
         <PageTitle>Invite contributors</PageTitle>
         <div className="w-96 mt-6">

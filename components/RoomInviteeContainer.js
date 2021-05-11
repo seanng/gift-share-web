@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { INVITE_STATUS } from 'utils/constants'
 import StepWizard from 'react-step-wizard'
 import Animate from 'styles/animate.module.css'
@@ -24,8 +25,25 @@ export default function RoomInviteeContainer({ data }) {
 
   return (
     <StepWizard transition={transitions} isHashEnabled>
-      <RoomInviteLanding data={data} onRejectClick={handleRejectClick} />
-      <RoomInviteForm data={data} onRejectClick={handleRejectClick} />
+      <Proxy />
+      <RoomInviteLanding
+        hashKey="invite"
+        data={data}
+        onRejectClick={handleRejectClick}
+      />
+      <RoomInviteForm
+        hashKey="confirm"
+        data={data}
+        onRejectClick={handleRejectClick}
+      />
     </StepWizard>
   )
+}
+
+// Hack to get the room hash to work
+function Proxy({ nextStep }) {
+  useEffect(() => {
+    nextStep()
+  }, [])
+  return <></>
 }

@@ -71,6 +71,7 @@ function useRoom() {
       setData({
         ...snapshotData,
         minContributors: snapshotData.minContributors * 1,
+        giftPrice: snapshotData.giftPrice * 1,
         slug,
       })
 

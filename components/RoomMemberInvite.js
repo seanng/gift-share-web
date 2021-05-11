@@ -2,6 +2,7 @@ import PageContainer from 'components/PageContainer'
 import StagesBar from 'components/StagesBar'
 import ParticipantsTable from 'components/ParticipantsTable'
 import ActivityStatus from 'components/ActivityStatus'
+import GiftDetailBox from 'components/GiftDetailBox'
 
 export default function RoomMemberInvite({ data }) {
   const handleNextClick = () => {}
@@ -10,7 +11,7 @@ export default function RoomMemberInvite({ data }) {
       <StagesBar index={0} />
       <PageContainer classes="flex flex-col items-center">
         <div className="w-96 mt-6">
-          {/* Gift Detail Box goes here */}
+          <GiftDetailBox data={data} classes="mb-6" />
           <ParticipantsTable participants={data.participants} />
           <ActivityStatus data={data} />
           <p className="text-md text-gray-600 whitespace-pre-wrap my-6">

@@ -1,6 +1,7 @@
-// import { useState } from 'react'
+import { useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import PageContainer from 'components/PageContainer'
+import ConfirmationModal from 'components/ConfirmationModal'
 import StagesBar from 'components/StagesBar'
 import PageTitle from 'components/PageTitle'
 import ParticipantsTable from 'components/ParticipantsTable'
@@ -10,8 +11,12 @@ import { updateRoom } from 'lib/db'
 
 const BASE_URL = 'https://www.giftshare.com/rooms'
 
+const CONFIRMATION_MODAL_MESSAGE =
+  'You will be unable to invite more contributors after pressing confirm.'
+
 export default function RoomCreatorInvite({ data }) {
   // const [isCopied, setIsCopied] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const hasTooFewParticipants =
     data.participants.length < data.minContributors * 1
 
@@ -23,8 +28,11 @@ export default function RoomCreatorInvite({ data }) {
 
   const handleNextClick = async () => {
     if (hasTooFewParticipants) return
+    setIsModalOpen(true)
+  }
+
+  const handleModalConfirmClick = async () => {
     await updateRoom(data.slug, { status: PAYMENT_STATUS })
-    // navigate to RoomCreatorPayment somehow
   }
 
   return (
@@ -62,6 +70,12 @@ export default function RoomCreatorInvite({ data }) {
           </button>
         </div>
       </PageContainer>
+      <ConfirmationModal
+        open={isModalOpen}
+        setOpen={setIsModalOpen}
+        message={CONFIRMATION_MODAL_MESSAGE}
+        onConfirmClick={handleModalConfirmClick}
+      />
     </>
   )
 }

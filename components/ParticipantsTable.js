@@ -2,7 +2,7 @@
 const DEFAULT_IMAGE =
   'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60'
 
-export default function ParticipantsTable({ participants }) {
+export default function ParticipantsTable({ participants, withPaymentStatus }) {
   return (
     <div className="flex flex-col">
       <div className="-my-2">
@@ -29,6 +29,14 @@ export default function ParticipantsTable({ participants }) {
                         {person.email}
                       </div>
                     </td>
+                    {withPaymentStatus && (
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                          {/* TODO: change to participant payment status */}
+                          Active
+                        </span>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>

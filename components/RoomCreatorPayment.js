@@ -15,7 +15,7 @@ export default function RoomCreatorPayment({ data }) {
     <>
       <StagesBar index={2} isCreator />
       <PageContainer classes="flex flex-col items-center">
-        <div className="w-96 mt-2">
+        <div className="w-96">
           <GiftDetailBox data={data} />
           <h2 className="text-2xl mt-6 mb-5 font-bold leading-normal text-gray-900 text-center">
             Awaiting full payment...

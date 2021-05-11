@@ -3,8 +3,7 @@ import { useRouter } from 'next/router'
 import RoomNotFound from 'components/RoomNotFound'
 import RoomCreatorInvite from 'components/RoomCreatorInvite'
 import RoomCreatorPayment from 'components/RoomCreatorPayment'
-import RoomMemberInvite from 'components/RoomMemberInvite'
-import RoomMemberPayment from 'components/RoomMemberPayment'
+import RoomMember from 'components/RoomMember'
 import RoomInviteeContainer from 'components/RoomInviteeContainer'
 import RoomInit from 'components/RoomInit'
 import {
@@ -13,8 +12,7 @@ import {
   ROOM_CREATOR_INVITE,
   ROOM_CREATOR_PAYMENT,
   ROOM_INVITEE,
-  ROOM_MEMBER_INVITE,
-  ROOM_MEMBER_PAYMENT,
+  ROOM_MEMBER,
   INVITE_STATUS,
   PAYMENT_STATUS,
 } from 'utils/constants'
@@ -26,19 +24,13 @@ const roomCreatorModes = {
   [PAYMENT_STATUS]: ROOM_CREATOR_PAYMENT,
 }
 
-const roomMemberModes = {
-  [INVITE_STATUS]: ROOM_MEMBER_INVITE,
-  [PAYMENT_STATUS]: ROOM_MEMBER_PAYMENT,
-}
-
 const views = {
   [ROOM_NOT_FOUND]: RoomNotFound,
   [ROOM_INIT]: RoomInit,
   [ROOM_INVITEE]: RoomInviteeContainer,
   [ROOM_CREATOR_INVITE]: RoomCreatorInvite,
   [ROOM_CREATOR_PAYMENT]: RoomCreatorPayment,
-  [ROOM_MEMBER_INVITE]: RoomMemberInvite,
-  [ROOM_MEMBER_PAYMENT]: RoomMemberPayment,
+  [ROOM_MEMBER]: RoomMember,
 }
 
 export default function RoomPage() {
@@ -84,9 +76,7 @@ function useRoom() {
       for (let i = 0; i < participants.length; i += 1) {
         const p = participants[i]
         if (p.hash === hash) {
-          setViewMode(
-            i === 0 ? roomCreatorModes[status] : roomMemberModes[status]
-          )
+          setViewMode(i === 0 ? roomCreatorModes[status] : ROOM_MEMBER)
           return
         }
       }

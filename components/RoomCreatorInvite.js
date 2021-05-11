@@ -9,7 +9,7 @@ import ActivityStatus from 'components/ActivityStatus'
 import { PAYMENT_STATUS } from 'utils/constants'
 import { updateRoom } from 'lib/db'
 
-const BASE_URL = 'https://www.giftshare.com/rooms'
+const BASE_URL = 'localhost:3000/rooms'
 
 const CONFIRMATION_MODAL_MESSAGE =
   'You will be unable to invite more contributors after pressing confirm.'
@@ -66,7 +66,7 @@ export default function RoomCreatorInvite({ data }) {
             disabled={hasTooFewParticipants}
             onClick={handleNextClick}
           >
-            Proceed to Payment
+            Ready to Pay
           </button>
         </div>
       </PageContainer>

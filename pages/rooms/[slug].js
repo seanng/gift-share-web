@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import RoomNotFound from 'components/RoomNotFound'
 import RoomCreatorInvite from 'components/RoomCreatorInvite'
 import RoomMemberInvite from 'components/RoomMemberInvite'
-import RoomInvitation from 'components/RoomInvitation'
+import RoomInviteeContainer from 'components/RoomInviteeContainer'
 import RoomInit from 'components/RoomInit'
 import {
   ROOM_NOT_FOUND,
@@ -27,7 +27,7 @@ const roomMemberModes = {
 const views = {
   [ROOM_NOT_FOUND]: RoomNotFound,
   [ROOM_INIT]: RoomInit,
-  [ROOM_INVITEE]: RoomInvitation,
+  [ROOM_INVITEE]: RoomInviteeContainer,
   [ROOM_MEMBER_INVITE]: RoomMemberInvite,
   [ROOM_CREATOR_INVITE]: RoomCreatorInvite,
 }
@@ -59,7 +59,11 @@ function useRoom() {
         return
       }
       // set data before changing view state
-      setData({ ...snapshotData, slug })
+      setData({
+        ...snapshotData,
+        minContributors: snapshotData.minContributors * 1,
+        slug,
+      })
 
       // remove hash from the url to protect users from copypasta hash
       // TODO: uncomment below after development (currently commented because of hot reload)

@@ -1,26 +1,35 @@
-import { useState, useEffect } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import RoomNotFound from 'components/RoomNotFound'
-import RoomCreator from 'components/RoomCreator'
-import RoomMember from 'components/RoomMember'
+import RoomCreatorInvite from 'components/RoomCreatorInvite'
+import RoomMemberInvite from 'components/RoomMemberInvite'
 import RoomInvitation from 'components/RoomInvitation'
 import RoomInit from 'components/RoomInit'
 import {
   ROOM_NOT_FOUND,
   ROOM_INIT,
-  ROOM_CREATOR,
-  ROOM_MEMBER,
+  ROOM_CREATOR_INVITE,
   ROOM_INVITEE,
+  ROOM_MEMBER_INVITE,
+  INVITE_STATUS,
 } from 'utils/constants'
 import { INITIAL_ROOM_DATA_STATE } from 'utils/configs'
-import { getRoom } from 'lib/db'
+import { listenToRoom } from 'lib/db'
+
+const roomCreatorModes = {
+  [INVITE_STATUS]: ROOM_CREATOR_INVITE,
+}
+
+const roomMemberModes = {
+  [INVITE_STATUS]: ROOM_MEMBER_INVITE,
+}
 
 const views = {
   [ROOM_NOT_FOUND]: RoomNotFound,
   [ROOM_INIT]: RoomInit,
-  [ROOM_MEMBER]: RoomMember,
-  [ROOM_CREATOR]: RoomCreator,
   [ROOM_INVITEE]: RoomInvitation,
+  [ROOM_MEMBER_INVITE]: RoomMemberInvite,
+  [ROOM_CREATOR_INVITE]: RoomCreatorInvite,
 }
 
 export default function RoomPage() {
@@ -35,39 +44,40 @@ function useRoom() {
   const [data, setData] = useState(INITIAL_ROOM_DATA_STATE)
   const [viewMode, setViewMode] = useState(ROOM_INIT)
   const router = useRouter()
+  const hash = useMemo(() => router.query.hash, [router.query])
 
+  // firestore's realtime snapshot
   useEffect(() => {
-    // guard clause to prevent breakage
     if (!router.query?.slug) return
-    ;(async function getRoomData() {
-      const { slug, hash } = router.query
-      const snapshot = await getRoom(slug)
+    const { slug } = router.query
+    return listenToRoom(slug, (snapshot) => {
+      const snapshotData = snapshot.data()
+
       // show not found msg if no data returned from snapshot
-      if (!snapshot) {
-        // TODO: also handle !snapshot.participants and other required fields
+      if (!snapshotData) {
         setViewMode(ROOM_NOT_FOUND)
         return
       }
-
       // set data before changing view state
-      setData({ ...snapshot, slug })
+      setData({ ...snapshotData, slug })
 
-      // remove hash from the url for security reasons
+      // remove hash from the url to protect users from copypasta hash
       // TODO: uncomment below after development (currently commented because of hot reload)
       // router.replace(`/rooms/${slug}`)
 
-      const { participants } = snapshot
+      const { participants, status } = snapshotData
 
       for (let i = 0; i < participants.length; i += 1) {
         const p = participants[i]
         if (p.hash === hash) {
-          setViewMode(i === 0 ? ROOM_CREATOR : ROOM_MEMBER)
+          setViewMode(
+            i === 0 ? roomCreatorModes[status] : roomMemberModes[status]
+          )
           return
         }
       }
-
       setViewMode(ROOM_INVITEE)
-    })()
+    })
   }, [router.query.slug])
 
   return {

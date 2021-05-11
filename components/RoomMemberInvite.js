@@ -1,7 +1,7 @@
 import StagesBar from 'components/StagesBar'
 
-export default function RoomMember({ data }) {
-  console.log('data in RoomMember: ', data)
+export default function RoomMemberInvite({ data }) {
+  console.log('data in RoomMemberInvite: ', data)
   return (
     <>
       <StagesBar index={1} />

@@ -3,41 +3,17 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import PageContainer from 'components/PageContainer'
 import StagesBar from 'components/StagesBar'
 import PageTitle from 'components/PageTitle'
+import { PAYMENT_STATUS } from 'utils/constants'
+import { updateRoom } from 'lib/db'
 
 const BASE_URL = 'https://www.giftshare.com/rooms'
+// TODO: change default image.
+const DEFAULT_IMAGE =
+  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60'
 
-// TODO: delete
-const participants = [
-  {
-    name: 'Bryan',
-    email: 'bryan@bry.com',
-    image:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-  },
-  {
-    name: 'Sophie',
-    email: 'soph@sophoe.com',
-    image:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-  },
-  {
-    name: 'Sean',
-    email: 'sean@bry.com',
-    image:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-  },
-]
-
-export default function RoomCreator({ data }) {
+export default function RoomCreatorInvite({ data }) {
   // const [isCopied, setIsCopied] = useState(false)
-  const handleCopy = () => {}
-  console.log('data in RoomCreator: ', data)
-
-  const handleNextClick = () => {
-    // check that min contributors
-  }
-
-  const shouldDisableNextButton =
+  const hasTooFewParticipants =
     data.participants.length < data.minContributors * 1
 
   const inviteLink = `${BASE_URL}/${data.slug}`
@@ -49,15 +25,23 @@ export default function RoomCreator({ data }) {
     },
     {
       label: 'Contributors',
-      // TODO: replace with data.participants
-      value: participants.length,
+      value: data.participants.length,
     },
     {
       label: 'Avg Spend',
-      // TODO: replace with data.participants
-      value: `$${(data.giftPrice / participants.length).toFixed(2)}`,
+      value: `$${(data.giftPrice / data.participants.length).toFixed(2)}`,
     },
   ]
+
+  const handleCopy = () => {
+    // change text to "Copied!" for 2 seconds..
+  }
+
+  const handleNextClick = async () => {
+    if (hasTooFewParticipants) return
+    await updateRoom(data.slug, { status: PAYMENT_STATUS })
+    // navigate to RoomCreatorPayment somehow
+  }
 
   return (
     <>
@@ -87,13 +71,13 @@ export default function RoomCreator({ data }) {
                 <div className="shadow overflow-hidden border-b border-gray-200 rounded-lg">
                   <table className="min-w-full divide-y divide-gray-200">
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {participants.map((person) => (
+                      {data.participants.map((person) => (
                         <tr key={person.email}>
                           <td className="pl-6 py-4 whitespace-nowrap">
                             <div className="flex-shrink-0 h-10 w-10">
                               <img
                                 className="h-10 w-10 rounded-full"
-                                src={person.image}
+                                src={person.image || DEFAULT_IMAGE}
                                 alt=""
                               />
                             </div>
@@ -134,7 +118,7 @@ export default function RoomCreator({ data }) {
           <button
             type="button"
             className="w-full flex justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-            disabled={shouldDisableNextButton}
+            disabled={hasTooFewParticipants}
             onClick={handleNextClick}
           >
             Proceed to Payment

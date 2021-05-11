@@ -7,6 +7,7 @@ import StagesBar from 'components/StagesBar'
 import CreateConfirmation from 'components/CreateConfirmation'
 import { createRoom } from 'lib/db'
 import { WIZARD_STEPS, INITIAL_CREATE_FORM_STATE } from 'utils/configs'
+import { INVITE_STATUS } from 'utils/constants'
 import Animate from 'styles/animate.module.css'
 
 export default function CreatePage() {
@@ -22,7 +23,7 @@ export default function CreatePage() {
 
     // create room
     const roomRef = await createRoom({
-      status: 'invitation',
+      status: INVITE_STATUS,
       participants: [{ name: details.creator, email: details.email, hash }],
       recipient: details.recipient,
       giftName: details.giftName,

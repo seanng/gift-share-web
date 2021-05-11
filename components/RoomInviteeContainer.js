@@ -23,9 +23,9 @@ export default function RoomInviteeContainer({ data }) {
   }
 
   return (
-    <StepWizard transition={transitions}>
+    <StepWizard transition={transitions} isHashEnabled>
       <RoomInviteLanding data={data} onRejectClick={handleRejectClick} />
-      <RoomInviteForm onRejectClick={handleRejectClick} />
+      <RoomInviteForm data={data} onRejectClick={handleRejectClick} />
     </StepWizard>
   )
 }

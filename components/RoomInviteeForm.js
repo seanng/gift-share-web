@@ -1,32 +1,47 @@
 import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/router'
+import randomstring from 'randomstring'
 import PageContainer from 'components/PageContainer'
 import PageTitle from 'components/PageTitle'
+import { updateRoom } from 'lib/db'
+
+const isEmailTaken = (email, participants) => {
+  for (let i = 0; i < participants.length; i += 1) {
+    const participant = participants[i]
+    if (participant.email === email) return true
+  }
+  return false
+}
 
 export default function RoomInviteForm({ data, onRejectClick }) {
+  const { slug, participants } = data
+  const router = useRouter()
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ defaultValues: { name: '', email: '' } })
 
-  const { recipient, participants } = data
-  const creatorName = participants[0].name
-
-  const onSubmit = () => {
-    // check that email is unique (via data)
-    // update the participant list on firebase
-    // update hash in url (and refresh page?)
+  const onSubmit = async ({ email, name }) => {
+    if (isEmailTaken(email, participants)) return
+    const hash = randomstring.generate(12)
+    const newParticipants = [...participants, { email, name, hash }]
+    await updateRoom(slug, { participants: newParticipants })
+    router.push({
+      pathname: '/rooms/[slug]',
+      query: { slug, hash },
+    })
+    router.reload()
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <PageContainer classes="flex flex-col items-center">
-        <div className="w-96 mt-6">
-          <h2 className="text-2xl font-bold leading-normal text-gray-900 text-center">{`${creatorName} would like to buy a gift for ${recipient} with you!`}</h2>
-          <PageTitle>What&apos;s your name and email?</PageTitle>
-          <p className="text-sm text-gray-600 whitespace-pre-wrap mt-6">
-            Enter a valid email for login and payment information.
-          </p>
+      <PageContainer classes="flex flex-col items-center pt-6">
+        <PageTitle>What&apos;s your name and email?</PageTitle>
+        <p className="text-sm text-gray-600 whitespace-pre-wrap mt-6">
+          Enter a valid email for login and payment information.
+        </p>
+        <div className="w-96 mt-2">
           <div className="my-4">
             <label
               htmlFor="name"

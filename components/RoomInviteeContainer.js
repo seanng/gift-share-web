@@ -1,14 +1,15 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { INVITE_STATUS } from 'utils/constants'
 import StepWizard from 'react-step-wizard'
 import Animate from 'styles/animate.module.css'
 import RoomInviteLanding from './RoomInviteeLanding'
-import RoomInviteForm from './RoomInviteeForm'
+import RoomInviteeForm from './RoomInviteeForm'
+import ReasonForDeclineModal from './ReasonForDeclineModal'
 
 export default function RoomInviteeContainer({ data }) {
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const handleRejectClick = () => {
-    // pop up modal to explain why.
-    // some google analytics stuff goes here.
+    setIsModalOpen(true)
   }
 
   if (data.status !== INVITE_STATUS) {
@@ -24,19 +25,22 @@ export default function RoomInviteeContainer({ data }) {
   }
 
   return (
-    <StepWizard transition={transitions} isHashEnabled>
-      <Proxy />
-      <RoomInviteLanding
-        hashKey="invite"
-        data={data}
-        onRejectClick={handleRejectClick}
-      />
-      <RoomInviteForm
-        hashKey="confirm"
-        data={data}
-        onRejectClick={handleRejectClick}
-      />
-    </StepWizard>
+    <>
+      <StepWizard transition={transitions} isHashEnabled>
+        <Proxy />
+        <RoomInviteLanding
+          hashKey="invite"
+          data={data}
+          onRejectClick={handleRejectClick}
+        />
+        <RoomInviteeForm
+          hashKey="confirm"
+          data={data}
+          onRejectClick={handleRejectClick}
+        />
+      </StepWizard>
+      <ReasonForDeclineModal open={isModalOpen} setOpen={setIsModalOpen} />
+    </>
   )
 }
 

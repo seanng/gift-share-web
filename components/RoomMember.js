@@ -3,13 +3,13 @@ import StagesBar from 'components/StagesBar'
 import ParticipantsTable from 'components/ParticipantsTable'
 import ActivityStatus from 'components/ActivityStatus'
 import GiftDetailBox from 'components/GiftDetailBox'
-import { INVITE_STATUS } from 'utils/constants'
+import { INVITE_STAGE } from 'utils/constants'
 
 export default function RoomMember({ data }) {
   const { status } = data
   const handleNextClick = () => {}
 
-  const isCreatorReady = status !== INVITE_STATUS
+  const isCreatorReady = status !== INVITE_STAGE
 
   return (
     <>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { INVITE_STATUS } from 'utils/constants'
+import { INVITE_STAGE } from 'utils/constants'
 import StepWizard from 'react-step-wizard'
 import Animate from 'styles/animate.module.css'
 import RoomInviteLanding from './RoomInviteeLanding'
@@ -12,7 +12,7 @@ export default function RoomInviteeContainer({ data }) {
     setIsModalOpen(true)
   }
 
-  if (data.status !== INVITE_STATUS) {
+  if (data.status !== INVITE_STAGE) {
     return <>This room is not open for invites. Please enter via email.</>
   }
 

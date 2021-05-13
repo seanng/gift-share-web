@@ -1,5 +1,5 @@
 export default function GiftDetailBox({ data, classes }) {
-  const maxAvgSpend = (data.giftPrice / data.minContributors).toFixed(2)
+  const maxAvgSpend = Math.ceil(data.giftPrice / data.minContributors)
   return (
     <div className={`rounded-lg bg-white shadow px-4 py-5 sm:px-6 ${classes}`}>
       <dl className="grid grid-cols-1 gap-x-4 gap-y-8 grid-cols-2">

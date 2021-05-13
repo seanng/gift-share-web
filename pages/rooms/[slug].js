@@ -13,15 +13,15 @@ import {
   ROOM_CREATOR_PAYMENT,
   ROOM_INVITEE,
   ROOM_MEMBER,
-  INVITE_STATUS,
-  PAYMENT_STATUS,
+  INVITE_STAGE,
+  PAYMENT_STAGE,
 } from 'utils/constants'
 import { INITIAL_ROOM_DATA_STATE } from 'utils/configs'
 import { listenToRoom } from 'lib/db'
 
 const roomCreatorModes = {
-  [INVITE_STATUS]: ROOM_CREATOR_INVITE,
-  [PAYMENT_STATUS]: ROOM_CREATOR_PAYMENT,
+  [INVITE_STAGE]: ROOM_CREATOR_INVITE,
+  [PAYMENT_STAGE]: ROOM_CREATOR_PAYMENT,
 }
 
 const views = {

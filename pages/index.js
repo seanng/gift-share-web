@@ -22,14 +22,14 @@ export default function LandingPage() {
                 </a>
               </Link>
             </div>
-            <div className="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
+            {/* <div className="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
               <a
                 href="#"
                 className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10"
               >
                 Sign in
               </a>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

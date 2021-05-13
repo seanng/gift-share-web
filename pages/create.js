@@ -8,7 +8,7 @@ import CreateConfirmation from 'components/CreateConfirmation'
 import { createRoom } from 'lib/db'
 import { sendRoomCreationSuccessEmail } from 'lib/mailer'
 import { WIZARD_STEPS, INITIAL_CREATE_FORM_STATE } from 'utils/configs'
-import { INVITE_STATUS, BASE_URL } from 'utils/constants'
+import { INVITE_STAGE, BASE_URL, UNPAID_STATUS } from 'utils/constants'
 import Animate from 'styles/animate.module.css'
 
 export default function CreatePage() {
@@ -24,8 +24,15 @@ export default function CreatePage() {
 
     // create room
     const roomRef = await createRoom({
-      status: INVITE_STATUS,
-      participants: [{ name: details.creator, email: details.email, hash }],
+      status: INVITE_STAGE,
+      participants: [
+        {
+          name: details.creator,
+          email: details.email,
+          hash,
+          paymentStatus: UNPAID_STATUS,
+        },
+      ],
       recipient: details.recipient,
       giftName: details.giftName,
       giftPrice: details.giftPrice,

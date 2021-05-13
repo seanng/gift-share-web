@@ -10,7 +10,7 @@ export default function ActivityStatus({ data }) {
     },
     {
       label: 'Avg Spend',
-      value: `$${(data.giftPrice / data.participants.length).toFixed(2)}`,
+      value: `$${Math.ceil(data.giftPrice / data.participants.length)}`,
     },
   ]
 

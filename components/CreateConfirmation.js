@@ -36,7 +36,10 @@ export default function CreateConfirmation({
             <Row label="Recipient" value={data.recipient} />
             <Row label="Gift name" value={data.giftName} />
             <Row label="Gift price" value={data.giftPrice} />
-            <Row label="Gift website url" value={data.giftWebsite} />
+            <Row
+              label="Gift website url"
+              value={data.giftWebsite || 'None provided'}
+            />
             <Row label="Minimum contributors" value={data.minContributors} />
           </dl>
         </div>

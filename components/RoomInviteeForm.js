@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import randomstring from 'randomstring'
 import PageContainer from 'components/PageContainer'
 import PageTitle from 'components/PageTitle'
-import { BASE_URL } from 'utils/constants'
+import { BASE_URL, UNPAID_STATUS } from 'utils/constants'
 import { sendMemberWelcomeEmail } from 'lib/mailer'
 import { updateRoom } from 'lib/db'
 
@@ -22,7 +22,10 @@ export default function RoomInviteForm({ data, onRejectClick }) {
   const onSubmit = async ({ email, name }) => {
     if (isEmailTaken(email, participants)) return
     const hash = randomstring.generate(12)
-    const newParticipants = [...participants, { email, name, hash }]
+    const newParticipants = [
+      ...participants,
+      { email, name, hash, paymentStatus: UNPAID_STATUS },
+    ]
 
     // add participant to room
     await updateRoom(slug, { participants: newParticipants })

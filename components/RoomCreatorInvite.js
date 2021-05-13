@@ -6,7 +6,7 @@ import StagesBar from 'components/StagesBar'
 import PageTitle from 'components/PageTitle'
 import ParticipantsTable from 'components/ParticipantsTable'
 import ActivityStatus from 'components/ActivityStatus'
-import { PAYMENT_STATUS, BASE_URL } from 'utils/constants'
+import { PAYMENT_STAGE, BASE_URL } from 'utils/constants'
 import { updateRoom } from 'lib/db'
 
 const CONFIRMATION_MODAL_MESSAGE =
@@ -30,7 +30,7 @@ export default function RoomCreatorInvite({ data }) {
   }
 
   const handleModalConfirmClick = async () => {
-    await updateRoom(data.slug, { status: PAYMENT_STATUS })
+    await updateRoom(data.slug, { status: PAYMENT_STAGE })
   }
 
   return (

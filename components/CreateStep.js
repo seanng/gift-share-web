@@ -62,6 +62,7 @@ export default function CreateStep({
                     'border-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500'
                   }`}
                   placeholder={input.placeholder}
+                  {...(input.type === 'number' ? { min: '1' } : {})}
                   {...register(input.name, input.validation)}
                 />
               </div>

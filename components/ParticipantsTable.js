@@ -1,6 +1,22 @@
+import {
+  UNPAID_STATUS,
+  CONFIRMED_STATUS,
+  AWAITING_CONFIRMATION_STATUS,
+} from 'utils/constants'
+
 // TODO: change default image.
 const DEFAULT_IMAGE =
   'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60'
+
+function getStatusColor(status) {
+  const mapStatusToColor = {
+    [UNPAID_STATUS]: 'red',
+    [AWAITING_CONFIRMATION_STATUS]: 'orange',
+    [CONFIRMED_STATUS]: 'green',
+  }
+  const color = mapStatusToColor[status]
+  return `px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-${color}-100 text-${color}-800`
+}
 
 export default function ParticipantsTable({ participants, withPaymentStatus }) {
   return (
@@ -31,8 +47,7 @@ export default function ParticipantsTable({ participants, withPaymentStatus }) {
                     </td>
                     {withPaymentStatus && (
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                          {/* TODO: change to participant payment status */}
+                        <span className={getStatusColor(person.paymentStatus)}>
                           Active
                         </span>
                       </td>

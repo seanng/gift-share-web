@@ -6,10 +6,8 @@ import StagesBar from 'components/StagesBar'
 import PageTitle from 'components/PageTitle'
 import ParticipantsTable from 'components/ParticipantsTable'
 import ActivityStatus from 'components/ActivityStatus'
-import { PAYMENT_STATUS } from 'utils/constants'
+import { PAYMENT_STATUS, BASE_URL } from 'utils/constants'
 import { updateRoom } from 'lib/db'
-
-const BASE_URL = 'localhost:3000/rooms'
 
 const CONFIRMATION_MODAL_MESSAGE =
   'You will be unable to invite more contributors after pressing confirm.'
@@ -20,7 +18,7 @@ export default function RoomCreatorInvite({ data }) {
   const hasTooFewParticipants =
     data.participants.length < data.minContributors * 1
 
-  const inviteLink = `${BASE_URL}/${data.slug}`
+  const inviteLink = `${BASE_URL}/rooms/${data.slug}`
 
   const handleCopy = () => {
     // change text to "Copied!" for 2 seconds..

@@ -4,6 +4,8 @@ import { useRouter } from 'next/router'
 import randomstring from 'randomstring'
 import PageContainer from 'components/PageContainer'
 import PageTitle from 'components/PageTitle'
+import { BASE_URL } from 'utils/constants'
+import { sendMemberWelcomeEmail } from 'lib/mailer'
 import { updateRoom } from 'lib/db'
 
 export default function RoomInviteForm({ data, onRejectClick }) {
@@ -21,7 +23,18 @@ export default function RoomInviteForm({ data, onRejectClick }) {
     if (isEmailTaken(email, participants)) return
     const hash = randomstring.generate(12)
     const newParticipants = [...participants, { email, name, hash }]
+
+    // add participant to room
     await updateRoom(slug, { participants: newParticipants })
+
+    // send welcome email
+    await sendMemberWelcomeEmail({
+      name,
+      email,
+      roomUrl: `${BASE_URL}/rooms/${slug}?hash=${hash}`,
+    })
+
+    // navigate to rooms page
     router.push({
       pathname: '/rooms/[slug]',
       query: { slug, hash },

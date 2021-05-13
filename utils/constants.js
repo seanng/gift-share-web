@@ -7,3 +7,5 @@ export const ROOM_MEMBER = 'room_member'
 
 export const INVITE_STATUS = 'invite'
 export const PAYMENT_STATUS = 'payment'
+
+export const BASE_URL = 'http://localhost:3000'

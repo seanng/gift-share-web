@@ -6,8 +6,9 @@ import CreateStep from 'components/CreateStep'
 import StagesBar from 'components/StagesBar'
 import CreateConfirmation from 'components/CreateConfirmation'
 import { createRoom } from 'lib/db'
+import { sendRoomCreationSuccessEmail } from 'lib/mailer'
 import { WIZARD_STEPS, INITIAL_CREATE_FORM_STATE } from 'utils/configs'
-import { INVITE_STATUS } from 'utils/constants'
+import { INVITE_STATUS, BASE_URL } from 'utils/constants'
 import Animate from 'styles/animate.module.css'
 
 export default function CreatePage() {
@@ -33,6 +34,11 @@ export default function CreatePage() {
     })
 
     // send email to creator
+    await sendRoomCreationSuccessEmail({
+      name: details.creator,
+      email: details.email,
+      roomUrl: `${BASE_URL}/rooms/${roomRef.id}?hash=${hash}`,
+    })
 
     // navigate to room with hash in param
     router.push({
